@@ -31,4 +31,4 @@
 *.atsln
 *.pdf
 SM-c-code-template.c
-*-solution.sm
+*-solution.*
