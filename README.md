@@ -1,9 +1,12 @@
-# CS 120B Lab Repository
+# CS 120B
 ## Michael Bradley
 
 ### What you'll find here
-All this repo contains is the C code for the various labs that are either in progress or completed.
-Each lab will be contained in its own folder, and only the code for each exercise will be tracked.
+All this repo contains are the C code for labs and exercises as well as RIBS files for the
+in class exercises.
+The labs and exercises are separated into different folders.
+Exercises are further separated by RIBS/RIMS and then by the date they were done.
+Labs are organized by lab and part number. 
 
 ### Contact info
 Email: mbrad012@ucr.edu
