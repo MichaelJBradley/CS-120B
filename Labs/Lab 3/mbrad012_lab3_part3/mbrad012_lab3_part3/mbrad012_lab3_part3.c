@@ -15,9 +15,9 @@
 #include <avr/io.h>
 #include "../../../utils.h"
 
-#define X 1
-#define Y 2
-#define P 4
+#define X 0x01
+#define Y 0x02
+#define P 0x04
 
 const unsigned char CODE_LEN = 2;
 unsigned char code[] = {P, Y};
@@ -83,13 +83,17 @@ void Tick() {
 			break;
 			
 		case Enter:
+			PORTB = 0;
 			break;
 			
 		case Unlocked:
+			PORTB = 0x01;
 			break;	
 		
 		default:
 			break;
 		
 	} //State Actions
+	
+	PORTC = state;
 }
