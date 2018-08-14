@@ -1,0 +1,19 @@
+A) 20% Duty Cycle       1000ms Period
+    Period: 100ms
+    L: 8
+    H: 2
+
+B) 60% Duty Cycle       1000ms Period
+    Period: 100ms
+    L: 4
+    H: 6
+
+C) 20% Duty Cycle       1000ms Period
+    Period: 10ms
+    L: 80
+    H: 20
+
+D) 43% Duty Cycle       1000ms Period
+    Period: 10ms
+    L: 57
+    H: 43
