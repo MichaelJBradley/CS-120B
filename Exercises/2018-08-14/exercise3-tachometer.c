@@ -1,6 +1,6 @@
 /*
 This code was automatically generated using the Riverside-Irvine State machine Builder tool
-Version 2.8 --- 8/15/2018 11:33:12 PST
+Version 2.8 --- 8/15/2018 15:18:6 PST
 */
 
 #include "rims.h"
@@ -9,6 +9,8 @@ unsigned char i;
 unsigned char s;
 unsigned char H = 10;
 unsigned char L = 10;
+unsigned desire;
+unsigned tacho;
 unsigned char timeToSample = 750;
 unsigned char sampleTime = 5;
 unsigned char once;
@@ -34,7 +36,6 @@ TickFct_State_machine_1() {
          }
          else if (s > timeToSample) {
             SM1_State = SM1_Sample;
-            i = 0;
             s = 0;
          }
          else if (i <= H && s <= timeToSample) {
@@ -60,7 +61,8 @@ TickFct_State_machine_1() {
          }
          else if (i > sampleTime) {
             SM1_State = SM1_High;
-            once = 0;
+            once = 0;
+            s = 0;
          }
          break;
       default:
@@ -79,13 +81,14 @@ TickFct_State_machine_1() {
          B = 0;
          break;
       case SM1_Sample:
-         if (A & 0xF0 > A & 0x0F && !once && L > 6) {
-             //Tacho > Desire
+         tacho = (A & 0xF0) >> 4;
+         desire = A & 0x0F;
+         
+         if (tacho > desire && !once && L > 0) {
              H++;
              L--;
              once = 0x01;
-         } else if (A & 0xF0 < A & 0x0F && !once && H > 6) {
-             //Tacho < Desire
+         } else if (tacho < desire && !once && H > 6) {
              H--;
              L++;
              once = 0x01;
