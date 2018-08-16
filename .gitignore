@@ -33,3 +33,7 @@
 SM-c-code-template.c
 *-solution.*
 *.docx
+asf.h
+
+ASF/
+config/
