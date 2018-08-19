@@ -55,6 +55,7 @@ void Tick() {
 			
 		case ResDown:
 			state = GetBit(a, 0) ? ResDown : Blink;
+			break;
 		
 		default:
 			state = Start;
