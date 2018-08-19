@@ -1,3 +1,6 @@
+#ifndef MJB_ATMEL
+#define MJB_ATMEL
+
 #include <asf.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -64,3 +67,5 @@ void WaitTimer() {
 	while(!TimerFlag);
 	TimerFlag = 0;
 }
+
+#endif
