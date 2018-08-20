@@ -12,7 +12,7 @@ void set_PWM(double frequency) {
 	//Will only update the registers when the frequency changes,
 	//otherwise allows music to play uninterrupted
 	if (frequency != current_frequency) {
-		if (!frequency) { TCCR3B & 0x08; } //stops timer/counter
+		if (!frequency) { TCCR3B &= 0x08; } //stops timer/counter
 		else { TCCR3B |= 0X03; } //resumes/continues timer/counter
 		
 		//prevents OCR3A from overflowing, using prescaler 64
