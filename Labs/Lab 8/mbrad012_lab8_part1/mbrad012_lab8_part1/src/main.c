@@ -52,6 +52,7 @@ int main (void) {
 			}
 			tasks[i].elapsedTime += periodGDC;
 		}
+		WaitTimer();
 	}
 }
 
