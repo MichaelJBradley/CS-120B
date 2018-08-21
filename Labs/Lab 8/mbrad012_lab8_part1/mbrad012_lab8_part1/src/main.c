@@ -17,8 +17,8 @@ unsigned short analog_g;
 unsigned char b;
 unsigned char d;
 	
-int RD_Tick();
-int DS_Tick();
+int RD_Tick(int state);
+int DS_Tick(int state);
 
 void SplitDisplay();
 
