@@ -20,7 +20,7 @@ task CreateTask(int state, unsigned long period, int (*Tick)(int)) {
 	task ret;
 	ret.state = state;
 	ret.period = period;
-	ret.elapsedTime = ret.period;
+	ret.elapsedTime = 0;
 	ret.Tick = Tick;
 
 	return ret;
