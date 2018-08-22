@@ -16,8 +16,6 @@ const unsigned long periodRD = 50;
 const unsigned long periodLED = 100;
 
 unsigned short light_g;
-unsigned char b;
-unsigned char d;
 
 int RD_Tick(int state);
 int LED_Tick(int state);
