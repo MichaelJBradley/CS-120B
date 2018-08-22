@@ -1,6 +1,9 @@
 #ifndef MJB_ADC
 #define MJB_ADC
 
+#include <asf.h>
+#include <avr/io.h>
+
 void ADC_init() {
 	ADCSRA |= (1 << ADEN) | (1 << ADSC) | (1 << ADATE);
 	//ADEN:	 setting this bit enables analog-to-digital conversion.
