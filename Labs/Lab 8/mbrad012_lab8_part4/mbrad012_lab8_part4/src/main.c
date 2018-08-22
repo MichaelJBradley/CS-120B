@@ -4,7 +4,7 @@
 
 #define TASKS 2
 #define LIGHT_MAX (0x47 << 1)
-#define LIGHT_THRESH (LIGHT_MAX >> 3)
+#define LIGHT_THRESH ((LIGHT_MAX) >> 3)
 #define LED_BITS 8
 
 enum RD_States {RD_Start, RD_Sample};
