@@ -1,6 +1,6 @@
 /*
 This code was automatically generated using the Riverside-Irvine State machine Builder tool
-Version 2.8 --- 8/22/2018 14:35:5 PST
+Version 2.8 --- 8/22/2018 14:54:11 PST
 */
 
 #include "rims.h"
@@ -78,6 +78,7 @@ TickFct_State_machine_2() {
 /*e.g., static int x = 0;*/
 /*Define user variables for this state machine here. No functions; make them global.*/
 static unsigned char echoes;
+static unsigned char once;
    switch(SM2_State) { // Transitions
       case -1:
          echoes = 0;
@@ -89,6 +90,7 @@ static unsigned char echoes;
          }
          else if (A1) {
             SM2_State = SM2_EchoLocated;
+            once = 0;
          }
          break;
       case SM2_EchoLocated:
@@ -108,8 +110,14 @@ static unsigned char echoes;
          B1 = 0;
          break;
       case SM2_EchoLocated:
-         B1 = 0x01;
+         if (!once) {
+             B1 = 0x01;
+             once = 1;
+         } else {
+             B1 = 0;
+         }
          echoes++;
+         
          break;
       default: // ADD default behaviour below
          break;
