@@ -20,8 +20,6 @@ unsigned short light_g;
 int RD_Tick(int state);
 int LED_Tick(int state);
 
-void SplitDisplay();
-
 int main (void) {
 	unsigned char i = 0;
 	
