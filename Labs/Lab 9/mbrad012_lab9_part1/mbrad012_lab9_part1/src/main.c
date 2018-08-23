@@ -1,18 +1,23 @@
 #include "../../../../atmel.h"
 #include "../../../../utils.h"
 
-#define TASKS 2
+#define TASKS 3
 #define LED_MAX 4
 
 enum TH_States {TH_Start, TH_Cycle};
-enum BL_States {BL_Start, BL_Blink};
+enum BL_States {BL_Start, BL_BlinkOn, BL_BlinkOff};
+enum MX_States {MX_Start, MX_MUX};
 
 task tasks[TASKS];
 
 const unsigned long periodGDC = 100;
 
+unsigned char thLED_g;
+unsigned char blLED_g;
+
 int TH_Tick(int state);
 int BL_Tick(int state);
+int MX_Tick(int state);
 
 int main (void)
 {
@@ -20,9 +25,11 @@ int main (void)
 
 	board_init();
 	
-	tasks[i] = CreateTask(TH_Start, 1000, &TH_Tick);
-	i++;
-	tasks[i] = CreateTask(BL_Start, 1000, &BL_Tick);
+	//Using the same project for both exercises 1 and 2
+	//Move the comments to demonstrate either
+	tasks[i++] = CreateTask(TH_Start, /*1000/**/300/**/, &TH_Tick);
+	tasks[i++] = CreateTask(BL_Start, 1000, &BL_Tick);
+	tasks[i] = CreateTask(MX_Start, /*1000/**/300/**/, &MX_Tick);
 	
 	TimerSet(periodGDC);
 	TimerOn();
@@ -42,11 +49,11 @@ int main (void)
 }
 
 int TH_Tick(int state) {
-	unsigned char led;
+	
 	switch (state) { //Transitions
 		case TH_Start:
 			state = TH_Cycle;
-			led = 0x01;
+			thLED_g = LED_MAX;
 			break;
 			
 		case TH_Cycle:
@@ -63,10 +70,10 @@ int TH_Tick(int state) {
 			break;
 		
 		case TH_Cycle:
-			if (led > LED_MAX) {
-				led <<= 1;
+			if (thLED_g < LED_MAX) {
+				thLED_g <<= 1;
 			} else {
-				led = 0x01;
+				thLED_g = 0x01;
 			}
 			break;
 		
@@ -74,11 +81,75 @@ int TH_Tick(int state) {
 			break;
 	} //State Actions
 	
-	PORTB = led;
-	
 	return state;
 }
 
 int BL_Tick(int state) {
+	switch (state) { //Transitions
+		case BL_Start:
+			state = BL_BlinkOn;
+			blLED_g = SetBit(blLED_g, 3, 1);
+			break;
+			
+		case BL_BlinkOn:
+			state = BL_BlinkOff;
+			break;
+			
+		case BL_BlinkOff:
+			state = BL_BlinkOn;
+			break;
+			
+		default:
+			state = BL_Start;
+			break;
+	} //Transitions
+	
+	switch (state) { //State Actions
+		case BL_Start:
+			break;
+		
+		case BL_BlinkOn:
+			blLED_g = SetBit(blLED_g, 3, 1);
+			break;
+		
+		case BL_BlinkOff:
+			blLED_g = SetBit(blLED_g, 3, 0);
+			break;
+		
+		default:
+			break;
+	} //State Actions
+	
+	return state;
+}
+
+int MX_Tick(int state) {
+	switch (state) { //Transitions
+		case MX_Start:
+			state = MX_MUX;
+			PORTB = blLED_g | thLED_g;
+			break;
+		
+		case MX_MUX:
+			state = MX_MUX;
+			break;
+		
+		default:
+			state = MX_Start;
+			break;
+	} //Transitions
+	
+	switch (state) { //State Actions
+		case MX_Start:
+			break;
+			
+		case MX_MUX:
+			PORTB = blLED_g | thLED_g;
+			break;
+			
+		default:
+			break;
+	} //State Actions
+	
 	return state;
 }
