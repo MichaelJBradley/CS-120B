@@ -40,6 +40,17 @@ unsigned char GetCols(point matrix[][DISP_SIZE]) {
 	return ~ret;
 }
 
+unsigned char GetRowsFromCol(point matrix[][DISP_SIZE], unsigned char col) {
+	unsigned char ret;
+	for (unsigned char r = 0; r < DISP_SIZE; r++) {
+		if (matrix[r][col].on) {
+			ret |= matrix[r][col].row;
+		}
+	}
+	
+	return ret;
+}
+
 unsigned char GetRows(point matrix[][DISP_SIZE]) {
 	unsigned char ret = 0;
 	for (unsigned char r = 0; r < DISP_SIZE; r++) {
