@@ -10,7 +10,6 @@
 #define OUTPUT_MUX_H_
 
 #include "../../../../utils.h"
-#include "led_out.h"
 #include "globals.h"
 
 #define OM_OUTPUTS 3
