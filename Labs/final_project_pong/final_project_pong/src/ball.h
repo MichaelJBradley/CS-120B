@@ -143,9 +143,14 @@ int BL_Tick(int state) {
 			
 		case BL_WaitGame:
 			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
+			break;
+			
+		case BL_WaitRelease:
+			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
 			out = 0;
 			xDir = BALL_NEG;
 			yDir = BALL_POS;
+			t = 0;
 			break;
 		
 		case BL_Move:
