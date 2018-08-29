@@ -30,7 +30,7 @@ int P2_Tick(int state) {
 	switch (state) { //Transitions
 		case P2_Start:
 		state = P2_Wait;
-		SetPaddle(&p2_g, P2_COL_START, P2_ROW_START);
+		SetDisplayable(&p2_g, P2_COL_START, P2_ROW_START);
 		t = 0;
 		break;
 		
@@ -53,7 +53,7 @@ int P2_Tick(int state) {
 		
 		case P2_Wait:
 		if (!play_g) {
-			SetPaddle(&p2_g, P2_COL_START, P2_ROW_START);
+			SetDisplayable(&p2_g, P2_COL_START, P2_ROW_START);
 			t = 0;
 		}
 		break;
@@ -73,9 +73,6 @@ int P2_Tick(int state) {
 		default:
 		break;
 	} //State Actions
-	
-	PORTC = SetBit(PORTC, 0, a3);
-	PORTC = SetBit(PORTC, 1, a4);
 	
 	return state;
 }
