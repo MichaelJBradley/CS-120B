@@ -29,7 +29,7 @@ int P1_Tick(int state) {
 	switch (state) { //Transitions
 		case P1_Start:
 			state = P1_Wait;
-			SetPaddle(&p1_g, P1_COL_START, P1_ROW_START);
+			SetDisplayable(&p1_g, P1_COL_START, P1_ROW_START);
 			t = 0;
 			break;
 			
@@ -52,7 +52,7 @@ int P1_Tick(int state) {
 		
 		case P1_Wait:
 			if (!play_g) {
-				SetPaddle(&p1_g, P1_COL_START, P1_ROW_START);
+				SetDisplayable(&p1_g, P1_COL_START, P1_ROW_START);
 				t = 0;
 			}
 			break;
