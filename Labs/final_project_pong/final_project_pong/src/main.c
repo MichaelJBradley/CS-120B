@@ -1,9 +1,10 @@
 #include "../../../atmel.h"
 #include "../../../utils.h"
 #include "led_out.h"
+#include "p1_paddle.h"
 #include "globals.h"
 
-#define TASKS 1
+#define TASKS 2
 task tasks[TASKS];
 
 const unsigned char periodGDC = 1;
@@ -17,13 +18,19 @@ int main (void)
 
 	board_init();
 
+	DDRA = 0x00;
+	PORTA = 0xFF;
 	DDRB = 0xFF;
 	PORTB = 0x00;
+	DDRC = 0xFF;
+	PORTC = 0x00;
 	
 	tasks[i++] = CreateTask(OUT_Start, periodGDC, &OUT_Tick);
+	tasks[i++] = CreateTask(P1_Start, 50, &P1_Tick);
 
-	rows_g = 0x01;
 	cols_g = ~0x01;
+	rows_g = 0x07;
+	play_g = 1;
 
 	while (1) {
 		for (unsigned char i = 0; i < TASKS; i++) {
@@ -33,6 +40,8 @@ int main (void)
 			}
 			tasks[i].elapsedTime += tasks[i].period;
 		}
+		cols_g = ~(p1_g.col);
+		rows_g = p1_g.row;
 		WaitTimer();
 	}
 }
