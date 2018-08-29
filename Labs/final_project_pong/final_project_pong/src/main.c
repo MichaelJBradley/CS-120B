@@ -30,7 +30,7 @@ int main (void)
 	//tasks[i++] = CreateTask(OUT_Start, periodGDC, &OUT_Tick);
 	tasks[i++] = CreateTask(P1_Start, 50, &P1_Tick);
 	tasks[i++] = CreateTask(P2_Start, 50, &P2_Tick);
-	tasks[i++] = CreateTask(OM_Start, 5, &OM_Tick);
+	tasks[i++] = CreateTask(OM_Start, 1, &OM_Tick);
 	
 	//Debug
 	play_g = 1;
