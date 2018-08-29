@@ -17,6 +17,7 @@ typedef struct displayable {
 
 //Set by main for debugging
 unsigned char play_g;
+unsigned char aiFlag_g;
 
 //Set by Output MUX (OM) SM
 unsigned char rows_g;
