@@ -22,6 +22,14 @@
 
 enum BL_States {BL_Start, BL_WaitStart, BL_WaitGame, BL_WaitRelease, BL_Move};
 	
+void SetSecondPaddle() {
+	if (aiFlag_g) {
+		secondPaddle_g = &ai_g;
+	} else {
+		secondPaddle_g = &p2_g;
+	}
+}
+	
 void IncScore() {
 	if (ball_g.col == P1_COL_START) {
 		score2_g++;
@@ -60,9 +68,9 @@ void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * o
 		if ((ball_g.row & p1_g.row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
 		}
-	} else if (ball_g.col == (P2_COL_START >> 1) && WillHitPaddle(*yDir, p2_g)) {
+	} else if (ball_g.col == (P2_COL_START >> 1) && WillHitPaddle(*yDir, *secondPaddle_g)) {
 		*xDir = BALL_NEG;
-		if ((ball_g.row & p2_g.row) == 0) {
+		if ((ball_g.row & secondPaddle_g->row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
 		}
 	}

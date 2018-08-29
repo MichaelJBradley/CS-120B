@@ -35,6 +35,7 @@ displayable ai_g;
 
 //Set by Ball (BL) SM
 displayable ball_g;
+displayable * secondPaddle_g;
 unsigned char score1_g;
 unsigned char score2_g;
 unsigned char xDir_g;
