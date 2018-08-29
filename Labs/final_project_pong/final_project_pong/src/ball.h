@@ -98,6 +98,8 @@ int BL_Tick(int state) {
 			
 			speed = 200;
 			t = 200;
+			
+			SetSecondPaddle();
 			break;
 			
 		case BL_WaitStart:
@@ -145,6 +147,7 @@ int BL_Tick(int state) {
 			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
 			score1_g = 0;
 			score2_g = 0;
+			SetSecondPaddle();
 			break;
 			
 		case BL_WaitGame:
