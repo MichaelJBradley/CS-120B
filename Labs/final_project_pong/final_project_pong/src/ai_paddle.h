@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "p2_paddle.h"
+#include "ball.h"
 
 #ifndef AI_PADDLE_H_
 #define AI_PADDLE_H_
@@ -16,9 +17,14 @@
 enum AI_States {AI_Start, AI_Wait, AI_Move};
 	
 void MoveAI() {
-	if (ai_g.row > ball_g.row) {
+	//Follow the ball
+	//Shift the ball 1 to the left to balance the fact that ai_g.row tends to be larger
+	//Check to see if it will hit the paddle to avoid extra movement
+	//If paddle is smaller move down if it's larger then move up
+	//(This should never happen, but) If they're equal do nothing
+	if ((ai_g.row < (ball_g.row << 1)) && (ai_g.row < P2_ROW_START) && !WillHitPaddle(yDir_g, ai_g)) {
 		ai_g.row <<= 1;
-	} else if (ai_g.row < ball_g.row) {
+	} else if ((ai_g.row > (ball_g.row << 1)) && (ai_g.row > P2_ROW_MIN) && !WillHitPaddle(yDir_g, ai_g)) {
 		ai_g.row >>= 1;
 	}
 }
@@ -26,11 +32,12 @@ void MoveAI() {
 int AI_Tick(int state) {
 	switch (state) { //Transitions
 		case AI_Start:
+			state = AI_Wait;
 			SetDisplayable(&ai_g, P2_COL_START, P2_ROW_START);
 			break;
 			
 		case AI_Wait:
-			state = (play_g && (rand() % AI_MOVE_CHANCE)) ? AI_Move : AI_Wait;
+			state = (play_g && (rand() % AI_MOVE_CHANCE == 0)) ? AI_Move : AI_Wait;
 			break;
 			
 		case AI_Move:
@@ -59,6 +66,8 @@ int AI_Tick(int state) {
 		default:
 			break;
 	} //State Actions
+	
+	return state;
 }
 
 
