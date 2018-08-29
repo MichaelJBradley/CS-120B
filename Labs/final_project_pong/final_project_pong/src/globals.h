@@ -37,6 +37,8 @@ displayable ai_g;
 displayable ball_g;
 unsigned char score1_g;
 unsigned char score2_g;
+unsigned char xDir_g;
+unsigned char yDir_g;
 
 
 void SetDisplayable(displayable * p, unsigned char col, unsigned char row) {

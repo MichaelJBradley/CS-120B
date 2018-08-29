@@ -73,8 +73,6 @@ int BL_Tick(int state) {
 	unsigned char a0 = GetBit(~PINA, 0);
 	
 	static unsigned char out;
-	static unsigned char xDir;
-	static unsigned char yDir;
 	
 	static unsigned short speed;
 	static unsigned short t;
@@ -87,8 +85,8 @@ int BL_Tick(int state) {
 			score1_g = 0;
 			score2_g = 0;
 			
-			xDir = BALL_NEG;
-			yDir = BALL_POS;
+			xDir_g = BALL_NEG;
+			yDir_g = BALL_POS;
 			
 			speed = 200;
 			t = 200;
@@ -148,25 +146,25 @@ int BL_Tick(int state) {
 		case BL_WaitRelease:
 			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
 			out = 0;
-			xDir = BALL_NEG;
-			yDir = BALL_POS;
+			xDir_g = BALL_NEG;
+			yDir_g = BALL_POS;
 			t = 0;
 			break;
 		
 		case BL_Move:
 			t++;
 			if (t >= speed) {
-				TestCollision(&xDir, &yDir, &out);
+				TestCollision(&xDir_g, &yDir_g, &out);
 		
-				if (yDir == BALL_POS) {
+				if (yDir_g == BALL_POS) {
 					ball_g.row <<= 1;
-				} else if (yDir == BALL_NEG) {
+				} else if (yDir_g == BALL_NEG) {
 					ball_g.row >>= 1;
 				}
 			
-				if (xDir == BALL_POS) {
+				if (xDir_g == BALL_POS) {
 					ball_g.col <<= 1;
-				} else if (xDir == BALL_NEG) {
+				} else if (xDir_g == BALL_NEG) {
 					ball_g.col >>= 1;
 				}
 				t = 0;
