@@ -23,6 +23,9 @@ unsigned char play_g;
 //Set by Player 1 Paddle (P1) SM
 displayable p1_g;
 
+//Set by Player 2 Paddle (P2) SM
+displayable p2_g;
+
 void SetPaddle(displayable * p, unsigned char col, unsigned char row) {
 	p->col = col;
 	p->row = row;
