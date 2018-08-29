@@ -178,9 +178,6 @@ int BL_Tick(int state) {
 			break;
 	}
 	
-	PORTC = SetBit(PORTC, 0, ball_g.col == (P1_COL_START >> 1));
-	PORTC = SetBit(PORTC, 0, WillHitPaddle(&yDir, p1_g));
-	
 	return state;
 }
 
