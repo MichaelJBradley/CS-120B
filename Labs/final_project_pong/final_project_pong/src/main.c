@@ -28,14 +28,13 @@ int main (void)
 	DDRC = 0xFF;
 	PORTC = 0x00;
 	
-	tasks[i++] = CreateTask(P1_Start, 1, &P1_Tick);
-	tasks[i++] = CreateTask(P2_Start, 1, &P2_Tick);
-	tasks[i++] = CreateTask(BL_Start, 1, &BL_Tick);
+	tasks[i++] = CreateTask(P1_Start, periodGDC, &P1_Tick);
+	tasks[i++] = CreateTask(P2_Start, periodGDC, &P2_Tick);
+	tasks[i++] = CreateTask(BL_Start, periodGDC, &BL_Tick);
 	tasks[i++] = CreateTask(OM_Start, periodGDC, &OM_Tick);
 	
 	//Debug
 	play_g = 1;
-	SetDisplayable(&ball_g, 0x00, 0x00);
 	
 	while (1) {
 		for (unsigned char i = 0; i < TASKS; i++) {
