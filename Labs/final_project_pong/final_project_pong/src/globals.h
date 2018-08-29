@@ -29,6 +29,9 @@ displayable p1_g;
 //Set by Player 2 Paddle (P2) SM
 displayable p2_g;
 
+//Set by AI Paddle (AI) SM
+displayable ai_g;
+
 //Set by Ball (BL) SM
 displayable ball_g;
 unsigned char score1_g;
