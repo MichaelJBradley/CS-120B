@@ -21,7 +21,23 @@ void LM_SafeClear() {
 	delay_ms(1);
 }
 
-int LM_DisplayWinner() {
+void LM_WriteSpaces(unsigned char spaces) {
+	for (unsigned char i = 0; i < spaces; i++) {
+		LCD_WriteData(' ');
+	}
+}
+
+void LM_DisplayGameTypeMenu() {
+	LCD_DisplayString(1, "1. Single Player2. Multi Player");
+}
+
+void LM_DisplayAILevelSelect() {
+	LCD_DisplayString(1, "AI Level:");
+	LCD_WriteData(' ');
+	LCD_WriteData(aiLevel_g + '0');
+}
+
+void LM_DisplayWinner() {
 	LCD_DisplayString(1,"Paddle ");
 	//if paddle 1 wins write char 1 otherwise write char 2
 	LCD_WriteData((winner_g == GAME_PAD1 ? GAME_PAD1 : GAME_PAD2) + '0');
@@ -44,9 +60,7 @@ void LM_DisplayScore(unsigned char score, unsigned char playerNum) {
 void LM_DisplayScores() {
 	LM_SafeClear();
 	LM_DisplayScore(score1_g, 1);
-	for (unsigned char i = 0; i < 6; i++) {
-		LCD_WriteData(' ');
-	}
+	LM_WriteSpaces(6);
 	LM_DisplayScore(score2_g, 2);
 }
 
@@ -61,6 +75,7 @@ int LM_Tick(int state) {
 			prevScore1 = -1;
 			prevScore2 = -1;
 			state = LM_Intro;
+			LM_DisplayGameTypeMenu();
 			break;
 			
 		case LM_Intro:
@@ -72,20 +87,24 @@ int LM_Tick(int state) {
 				state = LM_GameOver;
 				LM_DisplayWinner();
 			}
+			break;
 			
 		case LM_Play:
 			if (intro_g) {
 				state = LM_Intro;
+				LM_DisplayGameTypeMenu();
 			} else if (play_g) {
 				state = LM_Play;
 			} else if (gameOver_g) {
 				state = LM_GameOver;
 				LM_DisplayWinner();
 			}
+			break;
 		
 		case LM_GameOver:
 			if (intro_g) {
 				state = LM_Intro;
+				LM_DisplayGameTypeMenu();
 			} else if (play_g) {
 				state = LM_Play;
 			} else if (gameOver_g) {
@@ -104,7 +123,6 @@ int LM_Tick(int state) {
 		break;
 		
 		case LM_Intro:
-			LCD_DisplayString(1, "Intro");
 			break;
 		
 		case LM_Play:
