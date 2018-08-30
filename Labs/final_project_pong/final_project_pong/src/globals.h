@@ -23,6 +23,7 @@ unsigned char aiLevel_g; //In the range [1, AI_MOVE_CHANCE]
 unsigned char intro_g;
 unsigned char play_g;
 unsigned char gameOver_g;
+unsigned char winner_g;
 
 
 //Set by Output MUX (OM) SM

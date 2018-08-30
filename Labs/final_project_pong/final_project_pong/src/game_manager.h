@@ -11,6 +11,9 @@
 
 #include "globals.h"
 
+#define GAME_PAD1 1
+#define GAME_PAD2 2
+
 enum GM_States {GM_Start, GM_Intro, GM_Play, GM_GameOver};
 
 void GM_SetFlags(unsigned char intro, unsigned char play, unsigned char over) {
