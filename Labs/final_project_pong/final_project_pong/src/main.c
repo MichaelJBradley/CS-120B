@@ -3,12 +3,16 @@
 
 #include "ai_paddle.h"
 #include "ball.h"
+#include "game_manager.h"
+#include "globals.h"
+#include "intro.h"
+#include "lcd_io.h"
+#include "lcd_mux.h"
 #include "output_mux.h"
 #include "p1_paddle.h"
 #include "p2_paddle.h"
-#include "globals.h"
 
-#define TASKS 4
+#define TASKS 5
 task tasks[TASKS];
 
 const unsigned char periodGDC = 1;
@@ -28,18 +32,36 @@ int main (void)
 	PORTB = 0x00;
 	DDRC = 0xFF;
 	PORTC = 0x00;
+	DDRD = 0xFF;
+	PORTD = 0xFF;
 	
+	LCD_init();
+	
+	tasks[i++] = CreateTask(GM_Start, periodGDC, &GM_Tick);
+	tasks[i++] = CreateTask(IN_Start, periodGDC, &IN_Tick);
 	tasks[i++] = CreateTask(P1_Start, periodGDC, &P1_Tick);
-	//tasks[i++] = CreateTask(P2_Start, periodGDC, &P2_Tick);
+	tasks[i++] = CreateTask(P2_Start, periodGDC, &P2_Tick);
 	tasks[i++] = CreateTask(AI_Start, 75, &AI_Tick);
 	tasks[i++] = CreateTask(BL_Start, periodGDC, &BL_Tick);
 	tasks[i++] = CreateTask(OM_Start, periodGDC, &OM_Tick);
+	tasks[i++] = CreateTask(LM_Start, 50, &LM_Tick);
 	
 	
 	//Debug
-	play_g = 1;
-	aiFlag_g = 1;
-	aiLevel_g = 3;
+	
+	/*
+	LCD_ClearScreen();
+	delay_ms(1);
+	LM_DisplayScore(5, 1);
+	for (unsigned char i = 0; i < 6; i++) {
+		LCD_WriteData(' ');
+	}
+	LM_DisplayScore(8, 2);
+	while (1) {
+		WaitTimer();
+	}
+	
+	/**/
 	
 	while (1) {
 		for (unsigned char i = 0; i < TASKS; i++) {
