@@ -37,7 +37,11 @@ int AI_Tick(int state) {
 			break;
 			
 		case AI_Wait:
-			state = (play_g && (rand() % AI_MOVE_CHANCE == 0)) ? AI_Move : AI_Wait;
+			//If random number is less than the AI level then move
+			//AI level 1: easy (1/3 chance to move)
+			//AI level 2: med (2/3 chance to move)
+			//AI level 3: hard (always moves)
+			state = (play_g && (rand() % AI_MOVE_CHANCE < aiLevel_g)) ? AI_Move : AI_Wait;
 			break;
 			
 		case AI_Move:

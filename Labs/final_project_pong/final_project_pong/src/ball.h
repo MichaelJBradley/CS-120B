@@ -65,6 +65,8 @@ void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * o
 	//if the ball is in the column next to the paddle and it will hit the paddle
 	if (ball_g.col == (P1_COL_START << 1) && WillHitPaddle(*yDir, p1_g)) {
 		*xDir = BALL_POS;
+		
+		//if the ball is not over the paddle then it will hit a corner
 		if ((ball_g.row & p1_g.row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
 		}
