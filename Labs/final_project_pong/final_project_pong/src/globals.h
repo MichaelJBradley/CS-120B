@@ -16,9 +16,19 @@ typedef struct displayable {
 
 
 //Set by main for debugging
+
+
+//Set by Game Manager (GM) SM
+unsigned char intro_g;
 unsigned char play_g;
+unsigned char gameOver_g;
+unsigned char winner_g;
+
+//Set by Intro (IN) SM
 unsigned char aiFlag_g;
 unsigned char aiLevel_g; //In the range [1, AI_MOVE_CHANCE]
+unsigned char aiSelect_g;
+unsigned char introFinish_g;
 
 //Set by Output MUX (OM) SM
 unsigned char rows_g;
