@@ -19,7 +19,12 @@
 
 #define GAME_MAX_SCORE 5
 
-enum GM_States {GM_Start, GM_Intro, GM_Play, GM_GameOver};
+enum GM_States {GM_Start, GM_Intro, GM_Play, GM_GameOver, GM_GORelease,
+	GM_Reset, GM_ResetRelease};
+
+int GM_IsReset(unsigned char a0, unsigned char a1, unsigned char a2) {
+	return a0 && a1 && a2;
+}
 
 void GM_SetFlags(unsigned char intro, unsigned char play, unsigned char over) {
 	intro_g = intro;
@@ -35,10 +40,11 @@ int GM_Tick(int state) {
 	switch (state) { //Transitions
 		case GM_Start:
 			GM_SetFlags(1, 0, 0);
+			state = GM_Intro;
 			break;
 			
 		case GM_Intro:
-			state = introFinish_g ? GM_Play : GM_Intro;
+			state = introFinish_g ? GM_Play : GM_Intro;	
 			break;
 			
 		case GM_Play:
@@ -47,10 +53,31 @@ int GM_Tick(int state) {
 			} else {
 				state = GM_Play;
 			}
+			if (GM_IsReset(a0, a1, a2)) {
+				state = GM_Reset;
+			}			
 			break;
 			
 		case GM_GameOver:
-			state = a0 ? GM_Intro : GM_GameOver;
+			state = a0 ? GM_GORelease : GM_GameOver;
+			if (GM_IsReset(a0, a1, a2)) {
+				state = GM_Reset;
+			}
+			break;
+			
+		case GM_GORelease:
+			state = a0 ? GM_GORelease : GM_Intro;
+			if (GM_IsReset(a0, a1, a2)) {
+				state = GM_Reset;
+			}
+			break;
+			
+		case GM_Reset:
+			state = GM_IsReset(a0, a1, a2) ? GM_Reset : GM_ResetRelease;
+			break;
+			
+		case GM_ResetRelease:
+			state = (!a0 && !a1 && !a2) ? GM_Intro : GM_ResetRelease;
 			break;
 			
 		default:
@@ -80,16 +107,21 @@ int GM_Tick(int state) {
 				winner_g = GAME_PAD1;
 			}
 			break;
+			
+		case GM_GORelease:
+			break;
+		
+		case GM_Reset:
+			break;
+			
+		case GM_ResetRelease:
+			break;
 		
 		default:
 			break;
 	} //State Actions
 	
-	//Doing soft reset here so that it doesn't have to be added to every single state
-	//Probably not the best convention but its easy and I'm running out of time
-	if (a0 && a1 && a2) {
-		state = GM_Intro;
-	}
+	PORTD = SetBit(PORTD, 0, aiFlag_g);
 	
 	return state;
 }
