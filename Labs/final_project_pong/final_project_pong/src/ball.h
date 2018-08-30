@@ -70,6 +70,7 @@ unsigned char WillHitPaddle(unsigned char yDir, displayable paddle) {
 void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * out, unsigned short * speed) {
 	if (ball_g.col == P1_COL_START || ball_g.col == P2_COL_START) {
 		*out = 1;
+		IncScore();
 		return;
 	}
 	
@@ -155,7 +156,7 @@ int BL_Tick(int state) {
 			} else if (out) {
 				state = BL_WaitGame;
 				out = 0;
-				IncScore();
+				//IncScore();
 			} else if (play_g && !out) {
 				state = BL_Move;
 			}
