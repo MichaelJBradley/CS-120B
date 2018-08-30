@@ -20,6 +20,9 @@
 #define BALL_TOP 0x01
 #define BALL_BOT 0x80
 
+#define BALL_SPEED_MAX 50
+#define BALL_SPEED_MIN 300
+
 enum BL_States {BL_Start, BL_WaitStart, BL_WaitGame, BL_WaitRelease, BL_Move};
 	
 void SetSecondPaddle() {
@@ -27,6 +30,20 @@ void SetSecondPaddle() {
 		secondPaddle_g = &ai_g;
 	} else {
 		secondPaddle_g = &p2_g;
+	}
+}
+
+void IncreaseSpeed(unsigned short * speed) {
+	//smaller number means faster ball because tick happens more frequently
+	if (*speed > BALL_SPEED_MAX) {
+		*speed -= 50;
+	}
+}
+
+void DecreaseSpeed(unsigned short * speed) {
+	//larger number means slower ball because tick happens less frequently
+	if (*speed < BALL_SPEED_MIN) {
+		*speed += 50;
 	}
 }
 	
@@ -50,7 +67,7 @@ unsigned char WillHitPaddle(unsigned char yDir, displayable paddle) {
 	return 0;
 }
 
-void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * out) {
+void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * out, unsigned short * speed) {
 	if (ball_g.col == P1_COL_START || ball_g.col == P2_COL_START) {
 		*out = 1;
 		return;
@@ -69,11 +86,19 @@ void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * o
 		//if the ball is not over the paddle then it will hit a corner
 		if ((ball_g.row & p1_g.row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
+			//if the ball hits a corner increase speed
+			IncreaseSpeed(speed);
+		} else {
+			//if the ball hits the center decrease speed
+			DecreaseSpeed(speed);
 		}
 	} else if (ball_g.col == (P2_COL_START >> 1) && WillHitPaddle(*yDir, *secondPaddle_g)) {
 		*xDir = BALL_NEG;
 		if ((ball_g.row & secondPaddle_g->row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
+			IncreaseSpeed(speed);
+		} else {
+			DecreaseSpeed(speed);
 		}
 	}
 }
@@ -167,7 +192,7 @@ int BL_Tick(int state) {
 		case BL_Move:
 			t++;
 			if (t >= speed) {
-				TestCollision(&xDir_g, &yDir_g, &out);
+				TestCollision(&xDir_g, &yDir_g, &out, &speed);
 		
 				if (yDir_g == BALL_POS) {
 					ball_g.row <<= 1;
