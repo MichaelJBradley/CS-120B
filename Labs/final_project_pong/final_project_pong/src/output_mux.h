@@ -55,7 +55,11 @@ int OM_Tick(int state) {
 			if (i % OM_OUTPUTS == 0) {
 				OutDisplayable(p1_g);
 			} else if (i % OM_OUTPUTS == 1) {
-				OutDisplayable(p2_g);
+				if (aiFlag_g) {
+					OutDisplayable(ai_g);
+				} else {
+					OutDisplayable(p2_g);
+				}
 			} else if (i % OM_OUTPUTS == 2) {
 				OutDisplayable(ball_g);
 			}

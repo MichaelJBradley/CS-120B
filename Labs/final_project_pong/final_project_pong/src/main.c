@@ -1,6 +1,7 @@
 #include "../../../atmel.h"
 #include "../../../utils.h"
 
+#include "ai_paddle.h"
 #include "ball.h"
 #include "output_mux.h"
 #include "p1_paddle.h"
@@ -29,12 +30,16 @@ int main (void)
 	PORTC = 0x00;
 	
 	tasks[i++] = CreateTask(P1_Start, periodGDC, &P1_Tick);
-	tasks[i++] = CreateTask(P2_Start, periodGDC, &P2_Tick);
+	//tasks[i++] = CreateTask(P2_Start, periodGDC, &P2_Tick);
+	tasks[i++] = CreateTask(AI_Start, 75, &AI_Tick);
 	tasks[i++] = CreateTask(BL_Start, periodGDC, &BL_Tick);
 	tasks[i++] = CreateTask(OM_Start, periodGDC, &OM_Tick);
 	
+	
 	//Debug
 	play_g = 1;
+	aiFlag_g = 1;
+	aiLevel_g = 3;
 	
 	while (1) {
 		for (unsigned char i = 0; i < TASKS; i++) {

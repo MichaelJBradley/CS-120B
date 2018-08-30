@@ -17,6 +17,8 @@ typedef struct displayable {
 
 //Set by main for debugging
 unsigned char play_g;
+unsigned char aiFlag_g;
+unsigned char aiLevel_g; //In the range [1, AI_MOVE_CHANCE]
 
 //Set by Output MUX (OM) SM
 unsigned char rows_g;
@@ -29,10 +31,16 @@ displayable p1_g;
 //Set by Player 2 Paddle (P2) SM
 displayable p2_g;
 
+//Set by AI Paddle (AI) SM
+displayable ai_g;
+
 //Set by Ball (BL) SM
 displayable ball_g;
+displayable * secondPaddle_g;
 unsigned char score1_g;
 unsigned char score2_g;
+unsigned char xDir_g;
+unsigned char yDir_g;
 
 
 void SetDisplayable(displayable * p, unsigned char col, unsigned char row) {

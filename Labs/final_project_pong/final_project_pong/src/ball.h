@@ -22,6 +22,14 @@
 
 enum BL_States {BL_Start, BL_WaitStart, BL_WaitGame, BL_WaitRelease, BL_Move};
 	
+void SetSecondPaddle() {
+	if (aiFlag_g) {
+		secondPaddle_g = &ai_g;
+	} else {
+		secondPaddle_g = &p2_g;
+	}
+}
+	
 void IncScore() {
 	if (ball_g.col == P1_COL_START) {
 		score2_g++;
@@ -57,12 +65,14 @@ void TestCollision(unsigned char * xDir, unsigned char * yDir, unsigned char * o
 	//if the ball is in the column next to the paddle and it will hit the paddle
 	if (ball_g.col == (P1_COL_START << 1) && WillHitPaddle(*yDir, p1_g)) {
 		*xDir = BALL_POS;
+		
+		//if the ball is not over the paddle then it will hit a corner
 		if ((ball_g.row & p1_g.row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
 		}
-	} else if (ball_g.col == (P2_COL_START >> 1) && WillHitPaddle(*yDir, p2_g)) {
+	} else if (ball_g.col == (P2_COL_START >> 1) && WillHitPaddle(*yDir, *secondPaddle_g)) {
 		*xDir = BALL_NEG;
-		if ((ball_g.row & p2_g.row) == 0) {
+		if ((ball_g.row & secondPaddle_g->row) == 0) {
 			*yDir = (*yDir == BALL_POS) ? BALL_NEG : BALL_POS;
 		}
 	}
@@ -73,8 +83,6 @@ int BL_Tick(int state) {
 	unsigned char a0 = GetBit(~PINA, 0);
 	
 	static unsigned char out;
-	static unsigned char xDir;
-	static unsigned char yDir;
 	
 	static unsigned short speed;
 	static unsigned short t;
@@ -87,11 +95,13 @@ int BL_Tick(int state) {
 			score1_g = 0;
 			score2_g = 0;
 			
-			xDir = BALL_NEG;
-			yDir = BALL_POS;
+			xDir_g = BALL_NEG;
+			yDir_g = BALL_POS;
 			
 			speed = 200;
 			t = 200;
+			
+			SetSecondPaddle();
 			break;
 			
 		case BL_WaitStart:
@@ -139,6 +149,7 @@ int BL_Tick(int state) {
 			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
 			score1_g = 0;
 			score2_g = 0;
+			SetSecondPaddle();
 			break;
 			
 		case BL_WaitGame:
@@ -148,25 +159,25 @@ int BL_Tick(int state) {
 		case BL_WaitRelease:
 			SetDisplayable(&ball_g, BALL_COL_START, BALL_ROW_START);
 			out = 0;
-			xDir = BALL_NEG;
-			yDir = BALL_POS;
+			xDir_g = BALL_NEG;
+			yDir_g = BALL_POS;
 			t = 0;
 			break;
 		
 		case BL_Move:
 			t++;
 			if (t >= speed) {
-				TestCollision(&xDir, &yDir, &out);
+				TestCollision(&xDir_g, &yDir_g, &out);
 		
-				if (yDir == BALL_POS) {
+				if (yDir_g == BALL_POS) {
 					ball_g.row <<= 1;
-				} else if (yDir == BALL_NEG) {
+				} else if (yDir_g == BALL_NEG) {
 					ball_g.row >>= 1;
 				}
 			
-				if (xDir == BALL_POS) {
+				if (xDir_g == BALL_POS) {
 					ball_g.col <<= 1;
-				} else if (xDir == BALL_NEG) {
+				} else if (xDir_g == BALL_NEG) {
 					ball_g.col >>= 1;
 				}
 				t = 0;
@@ -177,9 +188,6 @@ int BL_Tick(int state) {
 		
 			break;
 	}
-	
-	PORTC = SetBit(PORTC, 0, ball_g.col == (P1_COL_START >> 1));
-	PORTC = SetBit(PORTC, 0, WillHitPaddle(&yDir, p1_g));
 	
 	return state;
 }
