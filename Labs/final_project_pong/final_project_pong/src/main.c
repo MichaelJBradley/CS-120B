@@ -39,6 +39,7 @@ int main (void)
 	//Debug
 	play_g = 1;
 	aiFlag_g = 1;
+	aiLevel_g = 3;
 	
 	while (1) {
 		for (unsigned char i = 0; i < TASKS; i++) {
