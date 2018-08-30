@@ -67,14 +67,16 @@ void LM_DisplayScores() {
 int LM_Tick(int state) {
 	static unsigned char prevScore1;
 	static unsigned char prevScore2;
+	static unsigned char prevAI;
 	
 	switch (state) {
 		case LM_Start:
+			state = LM_Intro;
 			//start scores off with highest number so that a score write
 			//   is inevitable on the first tick of play
 			prevScore1 = -1;
 			prevScore2 = -1;
-			state = LM_Intro;
+			prevAI = -1;
 			LM_DisplayGameTypeMenu();
 			break;
 			
@@ -83,6 +85,8 @@ int LM_Tick(int state) {
 				state = LM_Intro;
 			} else if (play_g) {
 				state = LM_Play;
+				prevScore1 = -1;
+				prevScore2 = -1;
 			} else if (gameOver_g) {
 				state = LM_GameOver;
 				LM_DisplayWinner();
@@ -93,6 +97,7 @@ int LM_Tick(int state) {
 			if (intro_g) {
 				state = LM_Intro;
 				LM_DisplayGameTypeMenu();
+				prevAI = -1;
 			} else if (play_g) {
 				state = LM_Play;
 			} else if (gameOver_g) {
@@ -105,8 +110,11 @@ int LM_Tick(int state) {
 			if (intro_g) {
 				state = LM_Intro;
 				LM_DisplayGameTypeMenu();
+				prevAI = -1;
 			} else if (play_g) {
 				state = LM_Play;
+				prevScore1 = -1;
+				prevScore2 = -1;
 			} else if (gameOver_g) {
 				state = LM_GameOver;
 			}
@@ -119,10 +127,13 @@ int LM_Tick(int state) {
 	
 	switch (state) {
 		case LM_Start:
-		
-		break;
+			break;
 		
 		case LM_Intro:
+			if (aiSelect_g && (prevAI != aiLevel_g)) {
+				LM_DisplayAILevelSelect();
+				prevAI = aiLevel_g;
+			}
 			break;
 		
 		case LM_Play:
