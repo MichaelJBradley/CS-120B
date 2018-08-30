@@ -12,7 +12,7 @@
 #include "p1_paddle.h"
 #include "p2_paddle.h"
 
-#define TASKS 5
+#define TASKS 8
 task tasks[TASKS];
 
 const unsigned char periodGDC = 1;
