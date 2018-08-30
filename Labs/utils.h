@@ -26,4 +26,16 @@ task CreateTask(int state, unsigned long period, int (*Tick)(int)) {
 	return ret;
 }
 
+// Combine two unsigned chars, creating one unsigned short
+// Inputs:
+//	   upper:	the upper byte of the short
+//	   lower:	the lower byte of the short
+// Output:	An unsigned short consisting of upper and lower
+unsigned short ConcatChars(unsigned char upper, unsigned char lower) {
+	unsigned short ret = upper;
+	ret <<= 8;
+	ret |= lower;
+	return ret;
+}
+
 #endif
